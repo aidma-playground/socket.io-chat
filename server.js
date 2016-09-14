@@ -5,12 +5,14 @@ io.on('connection', function(client){
     console.log('%s user connection', client.id);
 
     client.on('user login', function(name) {
-        console.log('%s user login as "%s"', client.id, name);
-
         if (!(name in users)) {
+            console.log('%s user login as "%s"', client.id, name);
+
             users[name] = client.id;
             client.emit('login');
         } else {
+            console.log('%s username dup "%s"', client.id, name);
+
             client.emit('username dup', name);
         }
     });
