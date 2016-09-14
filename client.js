@@ -11,11 +11,11 @@ rl.on('close', function() {
     process.exit(0);
 });
 
-var askUserName = function(r) {
-    r.setPrompt('Enter username> ');
-    r.prompt();
+var askUserName = function askUserName() {
+    rl.setPrompt('Enter username> ');
+    rl.prompt();
     
-    r.once('line', function(line) {
+    rl.once('line', function(line) {
         socket.emit('user login', line.trim());
     });
 };
@@ -41,4 +41,4 @@ socket.on('say', function(data) {
     rl.prompt(true);
 });
 
-askUserName(rl);
+askUserName();
