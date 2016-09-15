@@ -10,10 +10,11 @@ io.on('connection', function(client){
         if (!(name in users)) {
             console.log('%s user login as "%s"', client.id, name);
 
-            users[name] = client.id;
-
             client.loggedIn = true;
-            client.emit('login');
+            client.emit('login', users);
+
+            users[name] = client.id;
+            client.broadcast.emit('user enter', name);
         } else {
             console.log('%s username dup "%s"', client.id, name);
 
@@ -44,6 +45,7 @@ io.on('connection', function(client){
         for (var k in users) {
             if (users[k] == client.id) {
                 delete users[k];
+                client.broadcast.emit('user leave', k);
                 break;
             }
         }

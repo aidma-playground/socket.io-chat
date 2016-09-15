@@ -20,7 +20,25 @@ var askUserName = function askUserName() {
     });
 };
 
-socket.on('login', function() {
+var log = function log() {
+    var args = [];
+    for (var k in arguments) {
+        args.push(arguments[k]);
+    }
+
+    process.stdout.cursorTo(0);
+    console.log.apply(this, args);
+    rl.prompt(true);
+};
+
+socket.on('login', function(users) {
+    var usernames = []
+    for (var k in users) {
+        usernames.push(k);
+    }
+
+    console.log('members: %s', usernames.join(', '));
+
     rl.setPrompt('> ');
     rl.prompt();
 
@@ -35,10 +53,16 @@ socket.on('username dup', function(name) {
     askUserName(rl);
 });
 
+socket.on('user enter', function(name) {
+    log('--- %s entered', name);
+});
+
+socket.on('user leave', function(name) {
+    log('--- %s left', name);
+});
+
 socket.on('say', function(data) {
-    process.stdout.cursorTo(0);
-    console.log('%s: %s', data.name, data.message);
-    rl.prompt(true);
+    log('%s: %s', data.name, data.message);
 });
 
 askUserName();
