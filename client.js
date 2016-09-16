@@ -20,7 +20,7 @@ function askUserName() {
     });
 }
 
-var log = function log() {
+function log() {
     process.stdout.cursorTo(0);
     console.log.apply(this, arguments);
     rl.prompt(true);
