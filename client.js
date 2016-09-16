@@ -21,13 +21,8 @@ function askUserName() {
 }
 
 var log = function log() {
-    var args = [];
-    for (var k in arguments) {
-        args.push(arguments[k]);
-    }
-
     process.stdout.cursorTo(0);
-    console.log.apply(this, args);
+    console.log.apply(this, arguments);
     rl.prompt(true);
 };
 
