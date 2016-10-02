@@ -20,19 +20,28 @@ function askUserName() {
     });
 }
 
+function put_15logs(logs){
+    for(var i=14;i>=0;--i){
+	console.log('%s: %s',logs[i].name,logs[i].msg);
+    }
+}
+
 function log() {
     process.stdout.cursorTo(0);
     console.log.apply(this, arguments);
     rl.prompt(true);
 };
 
-socket.on('login', function(users) {
+socket.on('login', function(users/*, logs*/) {
     var usernames = []
     for (var k in users) {
         usernames.push(k);
     }
 
     console.log('members: %s', usernames.join(', '));
+
+    // ログを出力する関数を呼ぶ
+    // put_15logs(logs);
 
     rl.setPrompt('> ');
     rl.prompt();

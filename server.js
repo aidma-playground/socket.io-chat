@@ -1,4 +1,9 @@
 var io = require('socket.io')();
+var Database = require("nedb");
+var db = new Database({
+    filename: "./db/chat_log",
+    autoload: true
+});
 var users = {}
 
 io.on('connection', function(client){
@@ -11,7 +16,19 @@ io.on('connection', function(client){
             console.log('%s user login as "%s"', client.id, name);
 
             client.loggedIn = true;
-            client.emit('login', users);
+
+	    // function putLog(_name, _msg){
+	    //     this.name = _name;
+	    //     this.msg = _msg;
+	    // }
+	    // var logs[];
+	    // for(var i=0;i<15;++i){
+	    // ------------------------------------
+	    //      DBからログを読み出す処理
+	    // ------------------------------------
+	    //     logs[i] = new putLog(name, msg);
+	    // }
+            client.emit('login', users/*, logs*/); 
 
             users[name] = client.id;
             client.broadcast.emit('user enter', name);
@@ -29,13 +46,20 @@ io.on('connection', function(client){
         }
 
         console.log('%s user say: "%s"', client.id, msg);
-
         var n = '';
         for (var k in users) {
             if (users[k] == client.id) {
                 n = k;
             }
         }
+
+	// nとmsgをDBに格納
+	var doc = {
+	     name: n,
+	     message: msg
+	};
+	db.insert(doc); 
+
         io.emit('say', {message: msg, name: n});
     });
 
