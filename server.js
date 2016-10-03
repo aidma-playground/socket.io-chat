@@ -28,6 +28,17 @@ io.on('connection', function(client){
         }
     });
 
+    client.on('search', function(msg) {
+        var target_msg = msg.replace(/^:s\s/,"");
+        if (!client.loggedIn) {
+            console.log('%s user search (***loggedIn=false): "%s"', client.id, target_msg);
+            return;
+        }
+        console.log('%s user search: "%s"', client.id, target_msg);
+        // 検索・出力処理
+        // client.emit('say',{message: msg, name: n});
+     });
+
     client.on('say', function(msg) {
         if (!client.loggedIn) {
             console.log('%s user say (***loggedIn=false): "%s"', client.id, msg);

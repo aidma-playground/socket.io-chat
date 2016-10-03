@@ -36,9 +36,12 @@ socket.on('login', function(users) {
 
     rl.setPrompt('> ');
     rl.prompt();
-
     rl.on('line', function(line) {
-        socket.emit('say', line.trim());
+	if(line.match(/^:s\b/)){
+	    socket.emit('search', line.trim());
+        }else{
+            socket.emit('say', line.trim());
+	}
         rl.prompt();
     });
 });
