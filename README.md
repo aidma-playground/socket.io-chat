@@ -2,6 +2,14 @@
 
 socket.io を使ったチャットアプリケーションです。
 
+## 追加で必要なモジュールについて
+
+ログの格納に__NeDB__モジュールを利用します。
+https://github.com/louischatriot/nedb
+
+ログ記録/検索時にタイムスタンプを利用するため__Date-Utils__モジュールを利用します。
+https://github.com/JerrySievert/date-utils/
+
 ## 使い方
 
 サーバーの起動:
@@ -13,17 +21,19 @@ $ nodejs server.js
 ```
 $ nodejs client.js
 ```
-こちらのブランチではクライアントの入力が
+
+過去ログから検索パターンに一致する発言を出力:
 ```
-:s [文字列]
+> :s [検索パターン]
 ```
-であった場合に過去ログより適合する発言をするコマンドを実装します。
 
-## 必要なモジュールについて
-
-ログの記録に__NeDB__モジュールを利用します。
-https://github.com/louischatriot/nedb
-
-ログ検索時にタイムスタンプを利用するため__Date-Utils__モジュールを利用します。
-https://github.com/JerrySievert/date-utils/
-
+## 検索結果の出力形式
+```
+search result: start
+user: match message_1st
+user: match message_2nd
+user: match message_3rd
+user: match message_... 
+user: match message_last
+search result: end 
+```
