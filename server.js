@@ -42,6 +42,19 @@ io.on('connection', function(client){
                 n = k;
             }
         }
+
+	// タイムスタンプを取得
+	var dt = new Date();
+	var timestamp = dt.toFormat("YYYYMMDDHH24MISS");
+
+	// nとmsgとtimestampをDBに格納
+	var doc = {
+	     name: n,
+	     message: msg,
+	     date: timestamp
+	};
+	db.insert(doc); 
+
         io.emit('say', {message: msg, name: n});
     });
 
