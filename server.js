@@ -34,11 +34,14 @@ io.on('connection', function(client){
             console.log('%s user search (***loggedIn=false): "%s"', client.id, target_msg);
             return;
         }
+
         console.log('%s user search: "%s"', client.id, target_msg);
+
         // 検索・出力処理
+        // var limit_search_log = 100;
         var target_pattern = new RegExp(target_msg);
-        db.find({'message':target_pattern}).sort({'date':-1}).limit().exec(function (err, LOG) {
-	    LOG.reverse();
+        db.find({'message':target_pattern}).sort({'date':1}).limit(/*limit_search_log*/).exec(function (err, LOG) {
+	    // LOG.reverse();
 	    client.emit('say', {message:'start', name: 'search result'});
  	    for(var i in LOG){
 		client.emit('say', {message: LOG[i].message, name: LOG[i].name});
