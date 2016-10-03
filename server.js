@@ -1,4 +1,10 @@
 var io = require('socket.io')();
+var DatUtil = require('date-utils');
+var Database = require("nedb");
+var db = new Database({
+    filename: "./db/chat_log",
+    autoload: true
+});
 var users = {}
 
 io.on('connection', function(client){
