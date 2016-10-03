@@ -41,7 +41,8 @@ search result: end
 ## 検索範囲
 
 デフォルトではログ全件から検索  
-> server.js
+> server.js  
 > `// var limit_search_log=100;`  
-> `db.find({'message':target_pattern}).sort({'date':1}).limit(/*limit_search_log*/).exec(function (err, LOG) {`  
+> `db.find({'message':target_pattern}).sort({'date':1}).limit(/*limit_search_log*/).exec(function (err, LOG) {`   
+
 をコメントアウトすることで、最新100件の中から検索  
