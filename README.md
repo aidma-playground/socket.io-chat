@@ -4,11 +4,11 @@ socket.io を使ったチャットアプリケーションです。
 
 ## 追加で必要なモジュールについて
 
-ログの格納に__NeDB__モジュールを利用します。
-https://github.com/louischatriot/nedb
+ログの格納に__NeDB__モジュールを利用します。  
+https://github.com/louischatriot/nedb  
 
-ログ記録/検索時にタイムスタンプを利用するため__Date-Utils__モジュールを利用します。
-https://github.com/JerrySievert/date-utils/
+ログ記録/検索時にタイムスタンプを利用するため__Date-Utils__モジュールを利用します。  
+https://github.com/JerrySievert/date-utils/  
 
 ## 使い方
 
@@ -37,3 +37,9 @@ user: match message_...
 user: match message_last
 search result: end 
 ```
+
+## 検索範囲
+デフォルトではログ全件から検索  
+`// var limit_search_log=100;`  
+`db.find({'message':target_pattern}).sort({'date':1}).limit(/*limit_search_log*/).exec(function (err, LOG) {`  
+をコメントアウトすることで、最新100件の中から検索  
