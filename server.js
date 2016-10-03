@@ -20,7 +20,8 @@ io.on('connection', function(client){
 
 	    // タイムスタンプ降順でDBからログを取得
 	    // ログインユーザの画面へ取得したログを昇順に表示させる
-	    db.find().sort({'date': -1 }).limit(15).exec(function (err, LOG) {
+	    var max_output_log=15;
+	    db.find().sort({'date': -1 }).limit(max_output_log).exec(function (err, LOG) {
 		LOG.reverse();
  		for(var i in LOG){
  		    client.emit('say', {message: LOG[i].message, name: LOG[i].name});
