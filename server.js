@@ -1,4 +1,5 @@
 var io = require('socket.io')();
+var DatUtil = require('date-utils');
 var Database = require("nedb");
 var db = new Database({
     filename: "./db/chat_log",
@@ -17,18 +18,16 @@ io.on('connection', function(client){
 
             client.loggedIn = true;
 
-	    // function putLog(_name, _msg){
-	    //     this.name = _name;
-	    //     this.msg = _msg;
-	    // }
-	    // var logs[];
-	    // for(var i=0;i<15;++i){
-	    // ------------------------------------
-	    //      DBからログを読み出す処理
-	    // ------------------------------------
-	    //     logs[i] = new putLog(name, msg);
-	    // }
-            client.emit('login', users/*, logs*/); 
+	    // タイムスタンプ降順でDBからログを取得
+	    // ログインユーザの画面へ取得したログを昇順に表示させる
+	    db.find().sort({'date': -1 }).limit(15).exec(function (err, LOG) {
+		LOG.reverse();
+ 		for(var i in LOG){
+ 		    client.emit('say', {message: LOG[i].message, name: LOG[i].name});
+		}
+	    });
+
+            client.emit('login', users); 
 
             users[name] = client.id;
             client.broadcast.emit('user enter', name);
@@ -52,11 +51,14 @@ io.on('connection', function(client){
                 n = k;
             }
         }
-
-	// nとmsgをDBに格納
+	// タイムスタンプを取得
+	var dt = new Date();
+	var timestamp = dt.toFormat("YYYYMMDDHH24MISS");
+	// nとmsgとtimestampをDBに格納
 	var doc = {
 	     name: n,
-	     message: msg
+	     message: msg,
+	     date: timestamp
 	};
 	db.insert(doc); 
 
