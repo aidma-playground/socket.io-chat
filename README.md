@@ -2,6 +2,14 @@
 
 socket.io を使ったチャットアプリケーションです。
 
+## 必要なモジュール
+
+ログの格納にNeDBモジュールを利用します。  
+https://github.com/louischatriot/nedb  
+
+ログ記録/読込時にタイムスタンプを利用するため__Date-Utils__モジュールを利用します。  
+https://github.com/JerrySievert/date-utils/
+
 ## 使い方
 
 サーバーの起動:
@@ -14,18 +22,19 @@ $ nodejs server.js
 $ nodejs client.js
 ```
 
-こちらのブランチではチャットルームに途中からはいった場合、過去15件のチャットログを見れるようにする機能を実装します。
-```
-user: message
-```
-の書式で表示します。
-また、ログイン/ログアウトについては記録及び表示されません
+## ログの出力形式
 
-出力するログの最大数は__server.js__内の下記の行で定義します。
+```
+user: message_...
+user: message_before
+user: message_last
+```
+
+## ログの出力数
+
+> server.js
 ```
 var max_output_log = 15;
 ```
-## 必要なモジュール
 
-ログを取得する際にタイムスタンプを利用するため、
-__date-utils__モジュールが必要です。
+代入する値を任意の値にすることで出力されるログの最大数を設定できます。
