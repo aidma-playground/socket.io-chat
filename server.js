@@ -1,5 +1,5 @@
 var io = require('socket.io')();
-var DatUtil = require('date-utils');
+var DateUtil = require('date-utils');
 var Database = require("nedb");
 var db = new Database({
     filename: "./db/chat_log",
