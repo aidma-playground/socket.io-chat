@@ -24,7 +24,7 @@ io.on('connection', function(client){
 	    db.find().sort({'date': -1 }).limit(max_output_log).exec(function (err, LOG) {
 		LOG.reverse();
  		for(var i in LOG){
- 		    client.emit('say', {message: LOG[i].message, name: LOG[i].name});
+ 		    client.emit('show_log', {message: LOG[i].message, name: LOG[i].name, date: LOG[i].date});
 		}
 	    });
 

@@ -26,7 +26,7 @@ function log() {
     rl.prompt(true);
 };
 
-socket.on('login', function(users/*, logs*/) {
+socket.on('login', function(users) {
     var usernames = []
     for (var k in users) {
         usernames.push(k);
@@ -60,4 +60,7 @@ socket.on('say', function(data) {
     log('%s: %s', data.name, data.message);
 });
 
+socket.on('show_log', function(data) {
+    log('[ %s ] %s: %s', data.date, data.name, data.message);
+});
 askUserName();
