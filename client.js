@@ -3,6 +3,17 @@ var socket = io('http://localhost:3000');
 var argv = require( 'argv' );
 var readline = require('readline');
 
+//コマンドラインオプションを定義
+argv.option([
+    {
+    name: 'log',
+    short: 'l',
+    type: 'int',
+    description: 'ログイン時に表示されるログ数を指定します',
+    example: '"node client.js log --log=balue" or "node client.js -l value"'
+    },
+]);
+
 var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
