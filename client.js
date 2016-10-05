@@ -28,7 +28,7 @@ function askUserName() {
     rl.prompt();
     
     rl.once('line', function(line) {
-        socket.emit('user login', line.trim());
+        socket.emit('user login', line.trim(), max_output_log);
     });
 }
 
@@ -76,7 +76,9 @@ socket.on('show_log', function(data) {
     log('[ %s ] %s: %s', data.date, data.name, data.message);
 });
 
-
 var args = argv.run();
-console.log(args);
+var max_output_log = 15;
+if(args.options.log != undefined){
+    max_output_log = args.options.log;
+}
 askUserName();

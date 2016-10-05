@@ -12,7 +12,7 @@ io.on('connection', function(client){
 
     client.loggedIn = false;
 
-    client.on('user login', function(name) {
+    client.on('user login', function(name, max_output_log) {
         if (!(name in users)) {
             console.log('%s user login as "%s"', client.id, name);
 
@@ -20,7 +20,7 @@ io.on('connection', function(client){
 
 	    // タイムスタンプ降順でDBからログを取得
 	    // ログインユーザの画面へ取得したログを昇順に表示させる
-	    var max_output_log=15;
+	    // var max_output_log=15;
 	    db.find().sort({'date': -1 }).limit(max_output_log).exec(function (err, LOG) {
 		LOG.reverse();
  		for(var i in LOG){
