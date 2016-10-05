@@ -1,5 +1,6 @@
 var io = require('socket.io-client');
 var socket = io('http://localhost:3000');
+var argv = require( 'argv' );
 var readline = require('readline');
 
 var rl = readline.createInterface({
@@ -63,4 +64,8 @@ socket.on('say', function(data) {
 socket.on('show_log', function(data) {
     log('[ %s ] %s: %s', data.date, data.name, data.message);
 });
+
+
+var args = argv.run();
+console.log(args);
 askUserName();

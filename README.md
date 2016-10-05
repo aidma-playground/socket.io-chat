@@ -4,11 +4,14 @@ socket.io を使ったチャットアプリケーションです。
 
 ## 必要なモジュール
 
-ログの格納にNeDBモジュールを利用します。  
+ログの格納に__NeDB__モジュールを利用します。  
 https://github.com/louischatriot/nedb  
 
 ログ記録/読込時にタイムスタンプを利用するため__Date-Utils__モジュールを利用します。  
 https://github.com/JerrySievert/date-utils/
+
+コマンドライン引数の処理に__argv__モジュールを利用します。  
+https://www.npmjs.com/package/argv
 
 ## 使い方
 
