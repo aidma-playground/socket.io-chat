@@ -25,19 +25,17 @@ $ nodejs server.js
 $ nodejs client.js
 ```
 
+ログイン時に出力されるログの最大数を設定する場合:
+```
+$ nodejs client.ls -l value
+```
+デフォルトでは15件です。  
+
 ## ログの出力形式
 
 ```
-user: message_...
-user: message_before
-user: message_last
+[ MM/DD HH24:MI ]user: message_...
+[ MM/DD HH24:MI ]user: message_before_last
+[ MM/DD HH24:MI ]user: message_last
 ```
 
-## ログの出力数
-
-> server.js
-```
-var max_output_log = 15;
-```
-
-代入する値を任意の値にすることで出力されるログの最大数を設定できます。
