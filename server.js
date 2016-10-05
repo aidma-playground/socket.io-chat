@@ -24,7 +24,8 @@ io.on('connection', function(client){
 	    db.find().sort({'date': -1 }).limit(max_output_log).exec(function (err, LOG) {
 		LOG.reverse();
  		for(var i in LOG){
- 		    client.emit('show_log', {message: LOG[i].message, name: LOG[i].name, date: LOG[i].date});
+		    var timestamp = LOG[i].date.toFormat("YYYYMMDDHH24MISS");
+ 		    client.emit('show_log', {message: LOG[i].message, name: LOG[i].name, date: timestamp});
 		}
 	    });
 
@@ -54,12 +55,11 @@ io.on('connection', function(client){
         }
 	// タイムスタンプを取得
 	var dt = new Date();
-	var timestamp = dt.toFormat("YYYYMMDDHH24MISS");
-	// nとmsgとtimestampをDBに格納
+	// nとmsgとdtをDBに格納
 	var doc = {
 	     name: n,
 	     message: msg,
-	     date: timestamp
+	     date: dt
 	};
 	db.insert(doc); 
 
