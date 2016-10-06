@@ -78,7 +78,7 @@ socket.on('show_log', function(data) {
 
 var args = argv.run();
 var max_output_log = 15;
-if(args.options.log != undefined){
+if(typeof args.options.log !== 'undefined'){
     max_output_log = args.options.log;
 }
 askUserName();
