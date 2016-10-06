@@ -1,6 +1,6 @@
 var io = require('socket.io-client');
 var socket = io('http://localhost:3000');
-var argv = require( 'argv' );
+var argv = require('argv');
 var readline = require('readline');
 
 //コマンドラインオプションを定義
