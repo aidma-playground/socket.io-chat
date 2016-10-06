@@ -1,6 +1,18 @@
 var io = require('socket.io-client');
 var socket = io('http://localhost:3000');
+var argv = require( 'argv' );
 var readline = require('readline');
+
+//コマンドラインオプションを定義
+argv.option([
+    {
+    name: 'log',
+    short: 'l',
+    type: 'int',
+    description: 'ログイン時に表示されるログ数を指定します',
+    example: '"node client.js log --log=balue" or "node client.js -l value"'
+    },
+]);
 
 var rl = readline.createInterface({
     input: process.stdin,
@@ -16,7 +28,7 @@ function askUserName() {
     rl.prompt();
     
     rl.once('line', function(line) {
-        socket.emit('user login', line.trim());
+        socket.emit('user login', line.trim(), max_output_log);
     });
 }
 
@@ -60,4 +72,13 @@ socket.on('say', function(data) {
     log('%s: %s', data.name, data.message);
 });
 
+socket.on('show_log', function(data) {
+    log('[ %s ] %s: %s', data.date, data.name, data.message);
+});
+
+var args = argv.run();
+var max_output_log = 15;
+if(args.options.log != undefined){
+    max_output_log = args.options.log;
+}
 askUserName();
