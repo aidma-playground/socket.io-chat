@@ -1,4 +1,5 @@
 var io = require('socket.io-client');
+var DateUtil = require('date-utils');
 var socket = io('http://localhost:3000');
 var argv = require('argv');
 var readline = require('readline');
@@ -48,9 +49,12 @@ socket.on('login', function(users) {
 
     rl.setPrompt('> ');
     rl.prompt();
-
     rl.on('line', function(line) {
-        socket.emit('say', line.trim());
+	if(line.match(/^:s\b/)){
+	    socket.emit('search', line.trim());
+        }else{
+            socket.emit('say', line.trim());
+	}
         rl.prompt();
     });
 });
@@ -70,6 +74,17 @@ socket.on('user leave', function(name) {
 
 socket.on('say', function(data) {
     log('%s: %s', data.name, data.message);
+});
+
+socket.on('search_result', function(LOG){
+    log('search result: output start');
+    for(var i in LOG){
+	// DBにはDate型で格納しているが、String型として取り出されるためキャストが必要
+	var timestamp = new Date(LOG[i].date);
+	timestamp = timestamp.toFormat("MM/DD HH24:MI");
+	log('[ %s ] %s: %s', timestamp, LOG[i].name, LOG[i].message);
+    }
+    log('search result: output finish');
 });
 
 socket.on('show_log', function(data) {
