@@ -63,4 +63,24 @@ socket.on('say', function(data) {
     log('%s: %s', data.name, data.message);
 });
 
+socket.on('search_result', function(LOG){
+    log('search result: output start');
+    for(var i in LOG){
+	log('%s: %s', LOG[i].name, LOG[i].message);
+	// 処理が割り込まれていないか確認するため、一件ごとに5000ミリ秒待機
+	//
+	// 実装時はここから
+	(function sleep(time){
+	    var d1 = new Date().getTime();
+	    var d2 = new Date().getTime();
+	    while (d2 < d1 + time) {
+		d2 = new Date().getTime();
+	    }
+	    return;
+	}(5000));
+	// ここまでを削除
+    }
+    log('search result: output finish');
+});
+
 askUserName();
