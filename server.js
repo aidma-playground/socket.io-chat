@@ -23,7 +23,8 @@ io.on('connection', function(client){
 	    db.find().sort({'date': -1 }).limit(max_output_log).exec(function (err, LOG) {
 		LOG.reverse();
  		for(var i in LOG){
-		    var timestamp = LOG[i].date.toFormat("MM/DD HH24:MI");
+		    var timestamp = new Date(LOG[i].date);
+		    timestamp = timestamp.toFormat("MM/DD HH24:MI");
  		    client.emit('show_log', {message: LOG[i].message, name: LOG[i].name, date: timestamp});
 		}
 	    });
@@ -38,6 +39,26 @@ io.on('connection', function(client){
             client.emit('username dup', name);
         }
     });
+
+    client.on('search', function(msg) {
+        var target_msg = msg.replace(/^:s\s/,"");
+        if (!client.loggedIn) {
+            console.log('%s user search (***loggedIn=false): "%s"', client.id, target_msg);
+            return;
+        }
+
+        console.log('%s user search: "%s"', client.id, target_msg);
+
+        // 検索・出力処理
+        // 検索にマッチするログを配列に格納し、その配列を引数に持たせてイベントを発火させる
+        // 検索結果出力イベントが1つにまとまるため他者の発言等に割り込まれない
+
+        // var limit_search_log = 100;
+        var target_pattern = new RegExp(target_msg);
+        db.find({'message':target_pattern}).sort({'date':1}).limit(/*limit_search_log*/).exec(function (err, LOG) {
+	    client.emit('search_result', LOG);
+	});
+     });
 
     client.on('say', function(msg) {
         if (!client.loggedIn) {
