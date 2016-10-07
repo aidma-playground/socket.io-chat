@@ -1,6 +1,19 @@
 var io = require('socket.io-client');
+var DateUtil = require('date-utils');
 var socket = io('http://localhost:3000');
+var argv = require('argv');
 var readline = require('readline');
+
+//コマンドラインオプションを定義
+argv.option([
+    {
+    name: 'log',
+    short: 'l',
+    type: 'int',
+    description: 'ログイン時に表示されるログ数を指定します',
+    example: '"node client.js log --log=balue" or "node client.js -l value"'
+    },
+]);
 
 var rl = readline.createInterface({
     input: process.stdin,
@@ -16,7 +29,7 @@ function askUserName() {
     rl.prompt();
     
     rl.once('line', function(line) {
-        socket.emit('user login', line.trim());
+        socket.emit('user login', line.trim(), max_output_log);
     });
 }
 
@@ -66,9 +79,21 @@ socket.on('say', function(data) {
 socket.on('search_result', function(LOG){
     log('search result: output start');
     for(var i in LOG){
-	log('%s: %s', LOG[i].name, LOG[i].message);
+	// DBにはDate型で格納しているが、String型として取り出されるためキャストが必要
+	var timestamp = new Date(LOG[i].date);
+	timestamp = timestamp.toFormat("MM/DD HH24:MI");
+	log('[ %s ] %s: %s', timestamp, LOG[i].name, LOG[i].message);
     }
     log('search result: output finish');
 });
 
+socket.on('show_log', function(data) {
+    log('[ %s ] %s: %s', data.date, data.name, data.message);
+});
+
+var args = argv.run();
+var max_output_log = 15;
+if(typeof args.options.log !== 'undefined'){
+    max_output_log = args.options.log;
+}
 askUserName();
